@@ -200,29 +200,33 @@ const input = ["3643533343334553356323612233523343334333322332347332342233335334
 "2325853123224336424153434532433322345421325276142232223244323332122222311243153442334324245452324243"]
 
 
-const TEST = ["234234234234278"]
+const TEST = ["987654321111111", "811111111111119", "234234234234278", "818181911112111"]
 
 function getBatteryJolten(arr: string[]){
-    let sum = 0;
-    for(let i = 0; i <  arr.length; i++){
-        let elementArr = arr[i].split("");
-        let finalNumber = "";
+  let total = 0;
+  for(let i = 0; i <  arr.length; i++){
+        let sum = "";
         let position = 0;
+        let maxNumber = "";
         for(let k = 11; k >= 0; k--){
-          let maxNumber = findMaxNumber(elementArr.slice(position, k))
-          console.log("maxNumber", maxNumber)
-          finalNumber+=(maxNumber);
-          // position = getElementPosition(elementArr.slice(position, elementArr.length), maxNumber)
-          // console.log("position", position)
+          if(k === 0){
+            maxNumber = findMaxNumber(arr[i].slice(position))
+            sum += maxNumber
+            break
+          }
+          maxNumber = findMaxNumber(arr[i].slice(position, -k))
+          position = getElementPosition(arr[i], maxNumber, position)
+          sum += maxNumber
         }
-        // console.log("finalNumber", finalNumber)
+        console.log(sum)
+        total += Number(sum);
     }
+    return total
 }
 
 
-function findMaxNumber(arr: string[]){
+function findMaxNumber(arr: string){
   let maxNumber= "0";
-
 
   for(let j = 0; j < arr.length; j++){
       if(arr[j] > maxNumber){
@@ -234,10 +238,8 @@ function findMaxNumber(arr: string[]){
   return maxNumber
 }
 
-function getElementPosition(arr: string[], element: string){
-  console.log('arr', arr.indexOf(element))
-  return arr.indexOf(element) + 1
+function getElementPosition(arr: string, element: string, position){
+  return arr.indexOf(element, position) + 1
 }
 
-
-getBatteryJolten(TEST)
+console.log(getBatteryJolten(input))
